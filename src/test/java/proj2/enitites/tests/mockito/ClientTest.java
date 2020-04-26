@@ -42,5 +42,14 @@ public class ClientTest {
 
     }
 
+    @ParameterizedTest(name = "{index} Surname {0} throws argument exception")
+    @DisplayName("Unallowed Surname will throw exception")
+    @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!"})
+    public void unallowedPernameTest(String arg){
+
+        assertThatThrownBy(() -> client.setSurname(arg)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
 
 }
