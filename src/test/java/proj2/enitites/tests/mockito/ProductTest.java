@@ -1,5 +1,6 @@
 package proj2.enitites.tests.mockito;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,7 +16,12 @@ public class ProductTest {
 
 
 
+    @BeforeEach
+    public void reset(){
 
+        product = new Product();
+
+    }
 
     private String nullizier(String nullexample){
 
@@ -32,10 +38,10 @@ public class ProductTest {
 
     @ParameterizedTest(name = "{index} Parameter {0} throws argument exception")
     @DisplayName("Unallowed name will throw exception")
-    @CsvSource({"", "null", " ", "    ", "Ala  makota", "A", " Ala", "Product @$%!"})
+    @CsvSource({"''", "null", "' '", "'    '", "Ala  makota", "A", "' Ala'", "Product @$%!"})
     public void unallowedNameTest(String val){
 
-        assertThatThrownBy(() -> product.setName(val)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> {product.setName(nullizier(val));}).isInstanceOf(IllegalArgumentException.class);
 
     }
 
