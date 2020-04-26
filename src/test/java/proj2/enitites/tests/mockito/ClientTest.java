@@ -38,7 +38,7 @@ public class ClientTest {
     @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!"})
     public void unallowedNameTest(String arg){
 
-        assertThatThrownBy(() -> client.setName(arg)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> client.setName(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
 
     }
 
@@ -47,7 +47,7 @@ public class ClientTest {
     @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!"})
     public void unallowedPernameTest(String arg){
 
-        assertThatThrownBy(() -> client.setSurname(arg)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> client.setSurname(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
 
     }
 
