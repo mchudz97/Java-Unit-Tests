@@ -4,9 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 import proj2.entities.Client;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ClientTest {
@@ -60,6 +62,14 @@ public class ClientTest {
 
     }
 
+    @ParameterizedTest(name = "{index} Surname {0} throws argument exception")
+    @DisplayName("Unallowed Surname will throw exception")
+    @CsvFileSource(resources = "../../emails.csv")
+    public void unallowedEmailAdressTest(String arg){
+
+        assertThatThrownBy(() -> client.setEmailAdress(arg)).isInstanceOf(IllegalArgumentException.class);
+
+    }
 
 
 }
