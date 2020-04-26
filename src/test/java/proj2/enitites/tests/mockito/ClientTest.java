@@ -40,7 +40,6 @@ public class ClientTest {
 
         assertThatThrownBy(() -> client.setName(arg)).isInstanceOf(IllegalArgumentException.class);
 
-
     }
 
 
