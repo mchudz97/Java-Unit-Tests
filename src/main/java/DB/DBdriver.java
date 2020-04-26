@@ -1,4 +1,4 @@
-package proj2.entities;
+package DB;
 
 public interface DBdriver {
 }

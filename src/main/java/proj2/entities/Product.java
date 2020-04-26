@@ -6,6 +6,17 @@ public class Product {
     private int id;
     private float price;
 
+    public Product(){};
+
+    public Product(int id, String name, float price){
+
+        this.setId(id);
+        this.setName(name);
+        this.setPrice(price);
+
+    }
+
+
     public void setName(String name){
 
 
@@ -35,7 +46,7 @@ public class Product {
 
     public void setPrice(float price){
 
-        if(price < 0){
+        if(price <= 0){
 
             throw new IllegalArgumentException("Price value must be positive");
 

@@ -53,11 +53,12 @@ public class ProductTest {
 
     }
 
-    @Test
+    @ParameterizedTest(name = "{index} Price {0} throws argument exception")
     @DisplayName("Unallowed price will throw exception")
-    public void unallowedPriceTest(){
+    @CsvSource({"0", "-1"})
+    public void unallowedPriceTest(String arg){
 
-        assertThatThrownBy(() -> product.setPrice(-1.0f)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> product.setPrice(Float.parseFloat(arg))).isInstanceOf(IllegalArgumentException.class);
 
     }
 
