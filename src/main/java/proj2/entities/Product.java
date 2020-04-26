@@ -36,7 +36,7 @@ public class Product {
 
         if(id < 0){
 
-            throw new IllegalArgumentException("Id value must be positive");
+            throw new IllegalArgumentException("Id value must be positive!");
 
         }
 
@@ -48,7 +48,7 @@ public class Product {
 
         if(price <= 0){
 
-            throw new IllegalArgumentException("Price value must be positive");
+            throw new IllegalArgumentException("Price value must be positive!");
 
         }
 
