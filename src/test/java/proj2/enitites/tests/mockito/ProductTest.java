@@ -36,14 +36,24 @@ public class ProductTest {
 
     }
 
-    @ParameterizedTest(name = "{index} Parameter {0} throws argument exception")
+    @ParameterizedTest(name = "{index} Name {0} throws argument exception")
     @DisplayName("Unallowed name will throw exception")
     @CsvSource({"''", "null", "' '", "'    '", "Ala  makota", "A", "' Ala'", "Product @$%!"})
     public void unallowedNameTest(String val){
 
-        assertThatThrownBy(() -> {product.setName(nullizier(val));}).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> product.setName(nullizier(val))).isInstanceOf(IllegalArgumentException.class);
 
     }
+
+    @Test
+    @DisplayName("Unallowed id will throw exception")
+    public void unallowedIdTest(){
+
+        assertThatThrownBy(() -> product.setId(-1)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
+
 
 
 
