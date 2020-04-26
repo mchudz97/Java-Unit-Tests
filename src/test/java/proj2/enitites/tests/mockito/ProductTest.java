@@ -53,6 +53,14 @@ public class ProductTest {
 
     }
 
+    @Test
+    @DisplayName("Unallowed price will throw exception")
+    public void unallowedPriceTest(){
+
+        assertThatThrownBy(() -> product.setPrice(-1.0f)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
 
 
 
