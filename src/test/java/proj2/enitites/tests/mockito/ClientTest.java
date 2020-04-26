@@ -2,6 +2,7 @@ package proj2.enitites.tests.mockito;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import proj2.entities.Client;
@@ -50,6 +51,15 @@ public class ClientTest {
         assertThatThrownBy(() -> client.setSurname(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
 
     }
+
+    @Test
+    @DisplayName("Unallowed id will throw exception")
+    public void unallowedIdTest(){
+
+        assertThatThrownBy(() -> client.setId(-1)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
 
 
 }
