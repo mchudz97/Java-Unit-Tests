@@ -5,6 +5,7 @@ public class Client {
     private String name;
     private String surname;
     private int id;
+    private String emailAdress;
 
     public void setName(String name){
 
@@ -39,6 +40,18 @@ public class Client {
         }
 
         this.id = id;
+
+    }
+
+    public void setEmailAdress(String emailAdress){
+
+        if(emailAdress == null || !emailAdress.matches("[a-z]{1,32}[@][a-z]{1,32}[.][a-z]{2,3}")){
+
+            throw new IllegalArgumentException("Invalid email adress!");
+
+        }
+
+        this.emailAdress = emailAdress;
 
     }
 
