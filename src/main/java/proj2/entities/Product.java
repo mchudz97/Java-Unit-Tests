@@ -4,7 +4,7 @@ public class Product {
 
     private String name;
     private int id;
-
+    private float price;
 
     public void setName(String name){
 
@@ -23,13 +23,25 @@ public class Product {
 
     public void setId(int id){
 
-        if(id<0){
+        if(id < 0){
 
             throw new IllegalArgumentException("Id value must be positive");
 
         }
 
         this.id = id;
+
+    }
+
+    public void setPrice(float price){
+
+        if(price < 0){
+
+            throw new IllegalArgumentException("Price value must be positive");
+
+        }
+
+        this.price = price;
 
     }
 
