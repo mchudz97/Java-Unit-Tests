@@ -23,7 +23,7 @@ public class OrderTest {
     @DisplayName("When negative Id value")
     public void unallowedIdValue(){
 
-        assertThatThrownBy(() -> order.setId(arg)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> order.setId(-1)).isInstanceOf(IllegalArgumentException.class);
 
     }
 
