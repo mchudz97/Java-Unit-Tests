@@ -62,12 +62,12 @@ public class ClientTest {
 
     }
 
-    @ParameterizedTest(name = "{index} Surname {0} throws argument exception")
-    @DisplayName("Unallowed Surname will throw exception")
-    @CsvFileSource(resources = "../../emails.csv")
+    @ParameterizedTest(name = "{index} EmailAdress {0} throws argument exception")
+    @DisplayName("Unallowed EmailAdress will throw exception")
+    @CsvFileSource(resources = "/mails.csv")
     public void unallowedEmailAdressTest(String arg){
 
-        assertThatThrownBy(() -> client.setEmailAdress(arg)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> client.setEmailAdress(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
 
     }
 
