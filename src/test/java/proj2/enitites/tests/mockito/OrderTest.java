@@ -27,4 +27,12 @@ public class OrderTest {
 
     }
 
+    @Test
+    @DisplayName("When negative clientId value")
+    public void unallowedClientIdValue(){
+
+        assertThatThrownBy(() -> order.setClientId(-1)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
 }
