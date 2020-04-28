@@ -136,6 +136,26 @@ public class ShoppingCartTest {
 
     }
 
+    @Test
+    @DisplayName("removing all products from cart")
+
+    public void removeAll(){
+
+        Product p1 = mock(Product.class);
+        Product p2 = mock(Product.class);
+
+        when(p1.getId()).thenReturn(1);
+        when(p2.getId()).thenReturn(2);
+
+        shoppingCart.add(p1);
+        shoppingCart.add(p2);
+
+        shoppingCart.removeAll();
+
+        assertThat(shoppingCart.getProducts().size(), is(0));
+
+    }
+
 
 
 }
