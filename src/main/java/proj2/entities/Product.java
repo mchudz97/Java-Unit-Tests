@@ -19,9 +19,6 @@ public class Product {
 
     public void setName(String name){
 
-
-
-
         if(name == null || !name.matches("([A-Z][a-z]{1,244}[ ]?)+")){
 
             throw new IllegalArgumentException("Invalid product name!");
@@ -56,5 +53,22 @@ public class Product {
 
     }
 
+    public String getName() {
+
+        return name;
+
+    }
+
+    public int getId() {
+
+        return id;
+    }
+
+
+    public float getPrice() {
+
+        return price;
+
+    }
 
 }

@@ -7,6 +7,17 @@ public class Client {
     private int id;
     private String emailAdress;
 
+    public Client(){};
+
+    public Client(int id, String name, String surname, String emailAdress){
+
+        this.setId(id);
+        this.setName(name);
+        this.setSurname(surname);
+        this.setEmailAdress(emailAdress);
+
+    }
+
     public void setName(String name){
 
         if(name == null || !name.matches("[A-Z][a-z]{2,254}")){
@@ -55,5 +66,28 @@ public class Client {
 
     }
 
+    public String getName() {
+
+        return name;
+
+    }
+
+    public String getSurname() {
+
+        return surname;
+
+    }
+
+    public int getId() {
+
+        return id;
+
+    }
+
+    public String getEmailAdress() {
+
+        return emailAdress;
+
+    }
 
 }

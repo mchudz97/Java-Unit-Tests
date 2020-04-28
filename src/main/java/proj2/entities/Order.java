@@ -1,10 +1,20 @@
 package proj2.entities;
 
+import com.thoughtworks.qdox.model.expression.Or;
+
 public class Order {
 
     private int id;
     private int clientId;
 
+    public Order(){};
+
+    public Order(int selfId, int clientId){
+
+        this.setId(selfId);
+        this.setClientId(selfId);
+
+    }
 
     public void setId(int id){
 
@@ -27,6 +37,18 @@ public class Order {
         }
 
         this.clientId = id;
+
+    }
+
+    public int getId() {
+
+        return id;
+
+    }
+
+    public int getClientId() {
+
+        return clientId;
 
     }
 
