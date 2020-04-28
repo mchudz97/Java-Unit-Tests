@@ -1,5 +1,6 @@
 package proj2.enitites.tests.mockito;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class ShoppingCartTest {
 
@@ -26,7 +28,7 @@ public class ShoppingCartTest {
 
 
     @Test
-    @DisplayName("verifying is addProduct adds to amount when ids are the same")
+    @DisplayName("when added the same product")
     public void addProductDoublesTest(){
 
         Product p1 = Mockito.mock(Product.class);
@@ -35,13 +37,13 @@ public class ShoppingCartTest {
 
         when(p1.getId()).thenReturn(1);
         when(p2.getId()).thenReturn(1);
-        when(p3.getId()).thenReturn(3);
+
 
         shoppingCart.add(p1);
         shoppingCart.add(p2);
-        shoppingCart.add(p3);
 
-        assertThat(shoppingCart.getProductAmout(p1), is(2));
+
+        assertThatThrownBy(()->shoppingCart.add(p2)).isInstanceOf(IllegalArgumentException.class);
 
     }
 
