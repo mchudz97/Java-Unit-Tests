@@ -28,19 +28,19 @@ public class ShoppingCartTest {
 
 
     @Test
-    @DisplayName("when added the same product")
+    @DisplayName("Exception will be thrown when added the same product")
     public void addProductDoublesTest(){
 
         Product p1 = Mockito.mock(Product.class);
         Product p2 = Mockito.mock(Product.class);
-        Product p3 = Mockito.mock(Product.class);
+
 
         when(p1.getId()).thenReturn(1);
         when(p2.getId()).thenReturn(1);
 
 
         shoppingCart.add(p1);
-        shoppingCart.add(p2);
+
 
 
         assertThatThrownBy(()->shoppingCart.add(p2)).isInstanceOf(IllegalArgumentException.class);
@@ -49,7 +49,7 @@ public class ShoppingCartTest {
 
 
     @Test
-    @DisplayName("verifying is addProduct method with single product amount using products id")
+    @DisplayName("verifying is addProduct using products id")
     public void addProductVerify(){
 
         Product p1 = Mockito.mock(Product.class);
@@ -64,7 +64,8 @@ public class ShoppingCartTest {
         shoppingCart.add(p2);
         shoppingCart.add(p3);
 
-        verify(any(Product.class), atLeast(1)).getId();
+
+        verify(p3, atLeast(1)).getId();
 
     }
 
