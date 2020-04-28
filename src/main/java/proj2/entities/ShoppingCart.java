@@ -52,4 +52,10 @@ public class ShoppingCart {
 
     }
 
+    public void removeAll(){
+
+        this.products.removeAll(products);
+
+    }
+
 }
