@@ -33,4 +33,23 @@ public class ShoppingCart {
 
     }
 
+    public void remove(Product product){
+
+        if(product == null) throw new IllegalArgumentException("Product has null value!");
+
+        for(Product p : products){
+
+            if(p.getId() == product.getId()){
+
+                this.products.remove(p);
+                return;
+
+            }
+
+        }
+
+        throw new IllegalArgumentException("Product not found!");
+
+    }
+
 }
