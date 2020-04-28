@@ -11,6 +11,7 @@ public class ShoppingCart {
 
     public void add(Product product){
 
+        if(product == null) throw new IllegalArgumentException("Product has null value!");
 
         for (Product p: products) {
 
@@ -31,7 +32,5 @@ public class ShoppingCart {
         return products;
 
     }
-
-
 
 }
