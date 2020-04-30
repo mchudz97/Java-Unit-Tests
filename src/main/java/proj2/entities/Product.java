@@ -71,4 +71,8 @@ public class Product {
 
     }
 
+    @Override
+    public String toString() {
+        return "Id: " + this.getId() + "\tName: " + this.getName() + "\tPrice: " + this.getPrice() + "\n";
+    }
 }

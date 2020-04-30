@@ -82,7 +82,7 @@ public class ClientTest {
         client.setName("Patryk");
         client.setSurname("Nowak");
 
-        assertThat(client.toString()).isEqualTo("Id: " + 10+"\tName: Patryk\tSurname: Nowak\tEmail adress: email@email.pl");
+        assertThat(client.toString()).isEqualTo("Id: " + 10+"\tName: Patryk\tSurname: Nowak\tEmail adress: email@email.pl\n");
 
     }
 

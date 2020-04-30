@@ -70,7 +70,7 @@ public class ProductTest {
         product.setName("Product");
         product.setPrice(20.0f);
 
-        assertThat(product.toString()).isEqualTo("Id: 10\tName: Product\tPrice: 20.0");
+        assertThat(product.toString()).isEqualTo("Id: 10\tName: Product\tPrice: 20.0\n");
 
     }
 

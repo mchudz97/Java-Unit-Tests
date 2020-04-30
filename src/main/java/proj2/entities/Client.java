@@ -93,6 +93,6 @@ public class Client {
     @Override
     public String toString() {
         return "Id: " + this.getId() + "\tName: " + this.getName() + "\tSurname: "
-                + this.getSurname() + "\tEmail adress: " + this.getEmailAdress();
+                + this.getSurname() + "\tEmail adress: " + this.getEmailAdress() + "\n";
     }
 }
