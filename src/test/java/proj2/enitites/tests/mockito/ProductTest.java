@@ -62,7 +62,17 @@ public class ProductTest {
 
     }
 
+    @Test
+    @DisplayName("toString format test")
+    public void toStringTest(){
 
+        product.setId(10);
+        product.setName("Product");
+        product.setPrice(20.0f);
+
+        assertThat(product.toString()).isEqualTo("Id: 10\tName: Product\tPrice: 20.0");
+
+    }
 
 
 
