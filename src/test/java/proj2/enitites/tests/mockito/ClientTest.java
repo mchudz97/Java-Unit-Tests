@@ -38,7 +38,8 @@ public class ClientTest {
 
     @ParameterizedTest(name = "{index} Name {0} throws argument exception")
     @DisplayName("Unallowed name will throw exception")
-    @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!"})
+    @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!",
+            "Adaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaam", "adam"})
     public void unallowedNameTest(String arg){
 
         assertThatThrownBy(() -> client.setName(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
@@ -47,7 +48,8 @@ public class ClientTest {
 
     @ParameterizedTest(name = "{index} Surname {0} throws argument exception")
     @DisplayName("Unallowed Surname will throw exception")
-    @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!"})
+    @CsvSource({"''", "null", "' '", "'    '", "A", "' Ala'", "Ma ciek", "Adam123", "Adam!",
+            "Adamczyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyk", "adamczyk"})
     public void unallowedPernameTest(String arg){
 
         assertThatThrownBy(() -> client.setSurname(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
@@ -68,6 +70,19 @@ public class ClientTest {
     public void unallowedEmailAdressTest(String arg){
 
         assertThatThrownBy(() -> client.setEmailAdress(nullizier(arg))).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
+    @Test
+    @DisplayName("toString format test")
+    public void toStringTest(){
+
+        client.setId(10);
+        client.setEmailAdress("email@email.pl");
+        client.setName("Patryk");
+        client.setSurname("Nowak");
+
+        assertThat(client.toString()).isEqualTo("Id: " + 10+"\tName: Patryk\tSurname: Nowak\tEmail adress: email@email.pl");
 
     }
 

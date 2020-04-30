@@ -20,7 +20,7 @@ public class Client {
 
     public void setName(String name){
 
-        if(name == null || !name.matches("[A-Z][a-z]{2,254}")){
+        if(name == null || !name.matches("[A-Z][a-z]{2,31}")){
 
             throw new IllegalArgumentException("Invalid name value!");
 
@@ -32,7 +32,7 @@ public class Client {
 
     public void setSurname(String surname){
 
-        if(name == null || !name.matches("[A-Z][a-z]{2,254}")){
+        if(name == null || !name.matches("[A-Z][a-z]{2,31}")){
 
             throw new IllegalArgumentException("Invalid name value!");
 
