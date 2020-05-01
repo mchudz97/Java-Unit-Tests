@@ -12,7 +12,7 @@ public class Order {
     public Order(int selfId, int clientId){
 
         this.setId(selfId);
-        this.setClientId(selfId);
+        this.setClientId(clientId);
 
     }
 
@@ -52,4 +52,10 @@ public class Order {
 
     }
 
+    @Override
+    public String toString() {
+
+        return "Id: " + this.getId() + "\tClient id: " + this.getClientId() + "\n";
+
+    }
 }
