@@ -77,10 +77,7 @@ public class ClientTest {
     @DisplayName("toString format test")
     public void toStringTest(){
 
-        client.setId(10);
-        client.setEmailAdress("email@email.pl");
-        client.setName("Patryk");
-        client.setSurname("Nowak");
+        client = new Client(10, "Patryk", "Nowak", "email@email.pl");
 
         assertThat(client.toString()).isEqualTo("Id: " + 10+"\tName: Patryk\tSurname: Nowak\tEmail adress: email@email.pl\n");
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import proj2.entities.Order;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class OrderTest {
@@ -32,6 +33,16 @@ public class OrderTest {
     public void unallowedClientIdValue(){
 
         assertThatThrownBy(() -> order.setClientId(-1)).isInstanceOf(IllegalArgumentException.class);
+
+    }
+
+    @Test
+    @DisplayName("toString format test")
+    public void toStringTest(){
+
+        order = new Order(10, 15);
+
+        assertThat(order.toString()).isEqualTo("Id: 10\tClient id: 15\n");
 
     }
 
