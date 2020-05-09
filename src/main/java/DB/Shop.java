@@ -57,4 +57,22 @@ public class Shop {
 
     }
 
+    public void updateClient(Client client){
+
+        if(client == null){
+
+            throw new IllegalArgumentException("Cannot update null object");
+
+        }
+
+        if (this.dBdriver.getClientById(client.getId()) == null){
+
+            throw new IllegalArgumentException("Client with that id doesnt exist!");
+
+        }
+
+        this.dBdriver.updateClient(client);
+
+    }
+
 }

@@ -168,7 +168,7 @@ public class ShopTest {
 
     @Test
     @DisplayName("Update client")
-    public void removeClient(){
+    public void updateClient(){
 
         Client clientMock = mock(Client.class);
         when(dBdriver.getClientById(0)).thenReturn(clientMock);
