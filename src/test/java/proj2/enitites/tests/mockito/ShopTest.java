@@ -48,7 +48,7 @@ public class ShopTest {
     }
 
     @Test
-    @DisplayName("Add Client if client with the same id exists")
+    @DisplayName("Add Client if client with the same id exist")
     public void addWhenExists(){
 
         Client clientMock = mock(Client.class);
@@ -57,7 +57,7 @@ public class ShopTest {
 
         assertThatThrownBy(() -> shop.addClient(clientMock))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Client with that id already exists!");
+                .hasMessage("Client with that id already exist!");
 
     }
 
@@ -99,5 +99,46 @@ public class ShopTest {
 
     }
 
+    @Test
+    @DisplayName("Remove client when client is null")
+    public void removeWhenNull(){
+
+        Client client = null;
+
+        assertThatThrownBy(() -> shop.removeClient(client))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot remove null object");
+
+    }
+
+    @Test
+    @DisplayName("Remove client when client doesnt exist")
+    public void removeWhenDoesntExist(){
+
+        Client clientMock = mock(Client.class);
+        when(clientMock.getId()).thenReturn(0);
+        when(dBdriver.getClientById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.removeClient(clientMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Client with that id already exist!");
+
+    }
+
+    @Test
+    @DisplayName("Remove client")
+    public void removeClient(){
+
+        Client clientMock = mock(Client.class);
+        when(dBdriver.getClientById(0)).thenReturn(clientMock);
+
+        doNothing().when(dBdriver).removeClient(clientMock);
+
+        shop.removeClient(clientMock);
+
+        verify(dBdriver, times(1)).removeClient(clientMock); // no mozna i tak
+
+
+    }
 
 }

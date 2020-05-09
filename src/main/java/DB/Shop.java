@@ -31,7 +31,7 @@ public class Shop {
 
         if (this.dBdriver.getClientById(client.getId()) != null){
 
-            throw new IllegalArgumentException("Client with that id already exists!");
+            throw new IllegalArgumentException("Client with that id already exist!");
 
         }
 
