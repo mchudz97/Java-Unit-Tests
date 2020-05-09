@@ -121,7 +121,7 @@ public class ShopTest {
 
         assertThatThrownBy(() -> shop.removeClient(clientMock))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Client with that id already exist!");
+                .hasMessage("Client with that id doesnt exist!");
 
     }
 

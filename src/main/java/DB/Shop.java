@@ -39,4 +39,22 @@ public class Shop {
 
     }
 
+    public void removeClient(Client client){
+
+        if(client == null){
+
+            throw new IllegalArgumentException("Cannot remove null object");
+
+        }
+
+        if (this.dBdriver.getClientById(client.getId()) == null){
+
+            throw new IllegalArgumentException("Client with that id doesnt exist!");
+
+        }
+
+        this.dBdriver.removeClient(client);
+
+    }
+
 }
