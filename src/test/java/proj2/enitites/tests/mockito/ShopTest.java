@@ -138,7 +138,49 @@ public class ShopTest {
 
         verify(dBdriver, times(1)).removeClient(clientMock); // no mozna i tak
 
+    }
+
+    @Test
+    @DisplayName("Update null client")
+    public void updateWhenNull(){
+
+        Client client = null;
+
+        assertThatThrownBy(() -> shop.updateClient(client))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot update null object");
 
     }
+
+    @Test
+    @DisplayName("Update non existing client")
+    public void updateNonExisting(){
+
+        Client clientMock = mock(Client.class);
+        when(clientMock.getId()).thenReturn(0);
+        when(dBdriver.getClientById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.updateClient(clientMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Client with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Update client")
+    public void removeClient(){
+
+        Client clientMock = mock(Client.class);
+        when(dBdriver.getClientById(0)).thenReturn(clientMock);
+
+        doNothing().when(dBdriver).updateClient(clientMock);
+
+        shop.updateClient(clientMock);
+
+        verify(dBdriver, times(1)).updateClient(clientMock);
+
+    }
+
+
 
 }
