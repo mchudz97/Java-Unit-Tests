@@ -83,8 +83,7 @@ public class ShopTest {
 
         final boolean[] isAdded = {false};
 
-        when(dBdriver.addClient(clientMock)).thenAnswer(new Answer<Void>(){
-
+        doAnswer(new Answer<Void>(){
 
             @Override
             public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
@@ -92,9 +91,11 @@ public class ShopTest {
                 return null;
             }
 
-        });
+        }).when(dBdriver).addClient(clientMock);
 
-        assertThat(isAdded[0], is(true));
+        shop.addClient(clientMock);
+
+        assertThat(isAdded[0], is(true)); // taki sobie przyklad dla voidow
 
     }
 
