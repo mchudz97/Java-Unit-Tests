@@ -223,4 +223,25 @@ public class Shop {
 
     }
 
+    public Order getOrderById(int id){
+
+        if(id < 0){
+
+            throw new IllegalArgumentException("Invalid id value!");
+
+        }
+
+        Order found = this.dBdriver.getOrderById(id);
+        if(found == null){
+
+            throw new IllegalArgumentException("Order with that id doesnt exist!");
+
+        }
+
+        return found;
+
+    }
+
+
+
 }
