@@ -187,5 +187,22 @@ public class Shop {
 
     }
 
+    public void removeOrder(Order order){
+
+        if(order == null){
+
+            throw new IllegalArgumentException("Cannot remove null object!");
+
+        }
+
+        if (this.dBdriver.getOrderById(order.getId()) == null){
+
+            throw new IllegalArgumentException("That order doesnt exist!");
+
+        }
+
+        this.dBdriver.removeOrder(order);
+
+    }
 
 }

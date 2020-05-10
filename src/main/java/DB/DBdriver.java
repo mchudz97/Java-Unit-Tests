@@ -16,6 +16,7 @@ public interface DBdriver {
     void updateProduct(Product product);
     void addOrder(Order order);
     Order getOrderById(int id);
+    void removeOrder(Order order);
 
 
 }
