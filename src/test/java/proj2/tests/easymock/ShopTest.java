@@ -26,7 +26,7 @@ public class ShopTest {
     @BeforeEach
     public void reset(){
 
-        dBdriver = createMock(MockType.STRICT, DBdriver.class);
+        dBdriver = createMock(MockType.NICE, DBdriver.class);
         shop = new Shop(dBdriver);
 
     }
@@ -132,7 +132,7 @@ public class ShopTest {
 
         Client clientMock = createMock(MockType.NICE, Client.class);
         expect(clientMock.getId()).andReturn(0);
-        expect(dBdriver.getClientById(clientMock.getId())).andReturn(null);
+        expect(dBdriver.getClientById(0)).andReturn(null);
         replay(clientMock, dBdriver);
 
         assertThatThrownBy(() -> shop.getAllOrdersFrom(clientMock))
@@ -147,8 +147,8 @@ public class ShopTest {
 
         Client clientMock = createMock(MockType.NICE, Client.class);
         expect(clientMock.getId()).andReturn(0);
-        expect(dBdriver.getClientById(clientMock.getId())).andReturn(createMock(Client.class));
-        expect(dBdriver.getAllOrdersFrom(clientMock)).andReturn(anyObject());
+        expect(dBdriver.getClientById(0)).andReturn(createMock(Client.class));
+        expect(dBdriver.getAllOrdersFrom(clientMock)).andReturn(null);
         replay(clientMock, dBdriver);
         shop.getAllOrdersFrom(clientMock);
 

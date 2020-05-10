@@ -1,8 +1,11 @@
 package DB;
 
+import com.thoughtworks.qdox.model.expression.Or;
 import proj2.entities.Client;
 import proj2.entities.Order;
 import proj2.entities.Product;
+
+import java.util.List;
 
 public interface DBdriver {
 
@@ -18,7 +21,7 @@ public interface DBdriver {
     Order getOrderById(int id);
     void removeOrder(Order order);
     void updateOrder(Order order);
-
+    List<Order> getAllOrdersFrom(Client client);
 
 
 }

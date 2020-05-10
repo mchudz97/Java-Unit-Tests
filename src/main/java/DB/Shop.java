@@ -4,6 +4,8 @@ import proj2.entities.Client;
 import proj2.entities.Order;
 import proj2.entities.Product;
 
+import java.util.List;
+
 public class Shop {
 
     private DBdriver dBdriver;
@@ -242,6 +244,24 @@ public class Shop {
 
     }
 
+    public List<Order> getAllOrdersFrom(Client client){
+
+        if(client == null){
+
+            throw new IllegalArgumentException("Client is  null!");
+
+        }
+
+        if(this.dBdriver.getClientById(client.getId()) == null){
+
+            throw new IllegalArgumentException("Client doesnt exist!");
+
+        }
+
+
+        return dBdriver.getAllOrdersFrom(client);
+
+    }
 
 
 }
