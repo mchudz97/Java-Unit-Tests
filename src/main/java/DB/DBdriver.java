@@ -12,6 +12,7 @@ public interface DBdriver {
     void addProduct(Product product);
     Product getProductById(int id);
     void removeProduct(Product product);
+    void updateProduct(Product product);
 
 
 }

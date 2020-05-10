@@ -131,5 +131,23 @@ public class Shop {
 
     }
 
+    public void updateProduct(Product product){
+
+        if(product == null){
+
+            throw new IllegalArgumentException("Cannot update null object!");
+
+        }
+
+        if (this.dBdriver.getProductById(product.getId()) == null){
+
+            throw new IllegalArgumentException("Product with that id doesnt exist!");
+
+        }
+
+        this.dBdriver.updateProduct(product);
+
+    }
+
 
 }
