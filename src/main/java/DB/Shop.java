@@ -205,4 +205,22 @@ public class Shop {
 
     }
 
+    public void updateOrder(Order order){
+
+        if(order == null){
+
+            throw new IllegalArgumentException("Cannot update null object!");
+
+        }
+
+        if (this.dBdriver.getOrderById(order.getId()) == null){
+
+            throw new IllegalArgumentException("That order doesnt exist!");
+
+        }
+
+        this.dBdriver.updateOrder(order);
+
+    }
+
 }
