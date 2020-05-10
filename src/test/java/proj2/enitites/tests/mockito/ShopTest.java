@@ -265,6 +265,44 @@ public class ShopTest {
 
     }
 
+    @Test
+    @DisplayName("Remove null product")
+    public void removeNullProduct(){
 
+        Product product = null;
+
+        assertThatThrownBy(() -> shop.removeProduct(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot remove null object");
+
+    }
+
+    @Test
+    @DisplayName("Remove non existing product")
+    public void removeNonExistingProduct(){
+
+        Product productMock = mock(Product.class);
+        when(productMock.getId()).thenReturn(0);
+        when(dBdriver.getProductById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.removeProduct(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Product with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Remove product")
+    public void removeProduct(){
+
+        Product productMock = mock(Product.class);
+        when(productMock.getId()).thenReturn(0);
+        when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
+        doNothing().when(dBdriver.removeProduct(productMock));
+        shop.removeProduct(productMock);
+
+        verify(dBdriver, times(1)).removeProduct(productMock);
+
+    }
 
 }
