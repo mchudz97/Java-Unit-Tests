@@ -149,5 +149,24 @@ public class Shop {
 
     }
 
+    public Product getProductById(int id){
+
+        if(id < 0){
+
+            throw new IllegalArgumentException("Invalid id value!");
+
+        }
+
+        Product found = this.dBdriver.getProductById(id);
+        if(found == null){
+
+            throw new IllegalArgumentException("Product with that id doesnt exist!");
+
+        }
+
+        return found;
+
+    }
+
 
 }

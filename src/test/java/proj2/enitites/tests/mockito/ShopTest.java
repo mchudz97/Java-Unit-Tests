@@ -334,7 +334,7 @@ public class ShopTest {
 
     @Test
     @DisplayName("Get client by id when no product with that id")
-    public void getClientByIdWhenNoClient(){
+    public void getProductByIdWhenNoClient(){
 
         when(dBdriver.getProductById(0)).thenReturn(null);
 
