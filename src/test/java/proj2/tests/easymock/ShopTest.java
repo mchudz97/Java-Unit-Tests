@@ -1,4 +1,4 @@
-package proj2.enitites.tests.easymock;
+package proj2.tests.easymock;
 
 import DB.DBdriver;
 import DB.Shop;
@@ -8,6 +8,7 @@ import org.easymock.TestSubject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import proj2.entities.Client;
 import proj2.entities.Order;
 import org.easymock.*;
 
@@ -25,7 +26,7 @@ public class ShopTest {
     @BeforeEach
     public void reset(){
 
-        dBdriver = createMock(MockType.NICE, DBdriver.class);
+        dBdriver = createMock(MockType.STRICT, DBdriver.class);
         shop = new Shop(dBdriver);
 
     }
@@ -110,6 +111,48 @@ public class ShopTest {
         replay(dBdriver);
 
         assertThat(shop.getOrderById(0), is(orderMock));
+
+    }
+
+    @Test
+    @DisplayName("Get all orders when null client")
+    public void getAllOrdersWhenNull(){
+
+        Client client = null;
+
+        assertThatThrownBy(() -> shop.getAllOrdersFrom(client))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Client is  null!");
+
+    }
+
+    @Test
+    @DisplayName("Get all orders when non existing client")
+    public void getAllOrdersWhenNonExisting(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        expect(clientMock.getId()).andReturn(0);
+        expect(dBdriver.getClientById(clientMock.getId())).andReturn(null);
+        replay(clientMock, dBdriver);
+
+        assertThatThrownBy(() -> shop.getAllOrdersFrom(clientMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Client doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get all orders from client")
+    public void getAllOrdersFromClient(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        expect(clientMock.getId()).andReturn(0);
+        expect(dBdriver.getClientById(clientMock.getId())).andReturn(createMock(Client.class));
+        expect(dBdriver.getAllOrdersFrom(clientMock)).andReturn(anyObject());
+        replay(clientMock, dBdriver);
+        shop.getAllOrdersFrom(clientMock);
+
+        verify();
 
     }
 

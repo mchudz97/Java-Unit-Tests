@@ -1,4 +1,4 @@
-package proj2.enitites.tests.mockito;
+package proj2.tests.mockito;
 
 import DB.DBdriver;
 import DB.Shop;
