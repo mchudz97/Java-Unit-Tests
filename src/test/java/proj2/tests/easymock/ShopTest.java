@@ -2,6 +2,7 @@ package proj2.tests.easymock;
 
 import DB.DBdriver;
 import DB.Shop;
+import com.thoughtworks.qdox.model.expression.Or;
 import org.easymock.Mock;
 import org.easymock.MockType;
 import org.easymock.TestSubject;
@@ -155,5 +156,48 @@ public class ShopTest {
         verify();
 
     }
+
+    @Test
+    @DisplayName("Get all products from null order")
+    public void getAllProductsWhenNull(){
+
+        Order order = null;
+
+        assertThatThrownBy(() -> shop.getAllProductsFrom(order))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Order is  null!");
+
+    }
+
+    @Test
+    @DisplayName("Get all products when non existing order")
+    public void getAllProductsWhenNonExisting(){
+
+        Order orderMock = createMock(MockType.NICE, Order.class);
+        expect(orderMock.getId()).andReturn(0);
+        expect(dBdriver.getOrderById(0)).andReturn(null);
+        replay(orderMock, dBdriver);
+
+        assertThatThrownBy(() -> shop.getAllProductsFrom(orderMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Order doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get all products from order")
+    public void getAllProductsFromOrder(){
+
+        Order orderMock = createMock(MockType.NICE, Order.class);
+        expect(orderMock.getId()).andReturn(0);
+        expect(dBdriver.getOrderById(0)).andReturn(createMock(Order.class));
+        expect(dBdriver.getAllProductsFrom(orderMock)).andReturn(null);
+        replay(orderMock, dBdriver);
+        shop.getAllProductsFrom(orderMock);
+
+        verify();
+
+    }
+
 
 }
