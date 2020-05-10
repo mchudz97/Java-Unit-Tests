@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import proj2.entities.Client;
+import proj2.entities.Order;
 import proj2.entities.Product;
 
 import java.util.ArrayList;
@@ -365,5 +366,46 @@ public class ShopTest {
         assertThat(shop.getProductById(0), is(productMock));
 
     }
+
+    @Test
+    @DisplayName("Add Order when order is null")
+    public void addOrderWhenNull(){
+
+        Order order = null;
+
+        assertThatThrownBy(() -> shop.addOrder(order))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot add null object!");
+
+    }
+
+    @Test
+    @DisplayName("Add order when order already exists")
+    public void addOrderWhenExists(){
+
+        Order orderMock = mock(Order.class);
+        when(orderMock.getId()).thenReturn(0);
+        when(dBdriver.getOrderById(0)).thenReturn(mock(Order.class));
+
+        assertThatThrownBy(() -> shop.addOrder(order))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("That order already exists!");
+
+    }
+
+    @Test
+    @DisplayName("add order")
+    public void addOrder(){
+
+        Order orderMock = mock(Order.class);
+        when(dBdriver.getOrderById(0)).thenReturn(null);
+        doNothing().when(dBdriver).addOrder(orderMock);
+        shop.addOrder(orderMock);
+
+        verify(dBdriver, times(1)).addOrder(orderMock);
+
+
+    }
+
 
 }
