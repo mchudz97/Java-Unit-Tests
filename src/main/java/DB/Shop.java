@@ -1,6 +1,7 @@
 package DB;
 
 import proj2.entities.Client;
+import proj2.entities.Order;
 import proj2.entities.Product;
 
 public class Shop {
@@ -165,6 +166,24 @@ public class Shop {
         }
 
         return found;
+
+    }
+
+    public void addOrder(Order order){
+
+        if(order == null){
+
+            throw new IllegalArgumentException("Cannot add null object!");
+
+        }
+
+        if (this.dBdriver.getOrderById(order.getId()) != null){
+
+            throw new IllegalArgumentException("That order already exists!");
+
+        }
+
+        this.dBdriver.addOrder(order);
 
     }
 

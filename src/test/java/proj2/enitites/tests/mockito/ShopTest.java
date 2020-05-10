@@ -387,14 +387,14 @@ public class ShopTest {
         when(orderMock.getId()).thenReturn(0);
         when(dBdriver.getOrderById(0)).thenReturn(mock(Order.class));
 
-        assertThatThrownBy(() -> shop.addOrder(order))
+        assertThatThrownBy(() -> shop.addOrder(orderMock))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("That order already exists!");
 
     }
 
     @Test
-    @DisplayName("add order")
+    @DisplayName("Add order")
     public void addOrder(){
 
         Order orderMock = mock(Order.class);
@@ -407,5 +407,44 @@ public class ShopTest {
 
     }
 
+    @Test
+    @DisplayName("Remove null order")
+    public void removeNullOrder(){
+
+        Order order = null;
+
+        assertThatThrownBy(() -> shop.removeOrder(order))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot remove null object!");
+
+    }
+
+    @Test
+    @DisplayName("Remove non existing order")
+    public void removeNonExistingOrder(){
+
+        Order orderMock = mock(Order.class);
+        when(orderMock.getId()).thenReturn(0);
+        when(dBdriver.getOrderById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.removeOrder(orderMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("That order doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Remove order")
+    public void removeOrder(){
+
+        Order orderMock = mock(Order.class);
+        when(orderMock.getId()).thenReturn(0);
+        when(dBdriver.getOrderById(0)).thenReturn(mock(Order.class));
+        doNothing().when(dBdriver).removeOrder(orderMock);
+        shop.removeOrder(orderMock);
+
+        verify(dBdriver, times(1)).removeOrder(orderMock);
+
+    }
 
 }
