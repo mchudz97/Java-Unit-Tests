@@ -75,4 +75,24 @@ public class Shop {
 
     }
 
+    public Client getClientById(int id){
+
+        if(id < 0){
+
+            throw new IllegalArgumentException("Invalid id value!");
+
+        }
+
+        Client found = this.dBdriver.getClientById(id);
+        if(found == null){
+
+            throw new IllegalArgumentException("Client with that id doesnt exist!");
+
+        }
+
+        return found;
+
+    }
+
+
 }
