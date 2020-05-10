@@ -305,4 +305,44 @@ public class ShopTest {
 
     }
 
+    @Test
+    @DisplayName("Update null product")
+    public void updateNullProduct(){
+
+        Product product = null;
+
+        assertThatThrownBy(() -> shop.updateProduct(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot update null object!");
+
+    }
+
+    @Test
+    @DisplayName("Update non existing product")
+    public void UpdateNonExistingProduct(){
+
+        Product productMock = mock(Product.class);
+        when(productMock.getId()).thenReturn(0);
+        when(dBdriver.getProductById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.updateProduct(productMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Product with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Update product")
+    public void updateProduct(){
+
+        Product productMock = mock(Product.class);
+        when(productMock.getId()).thenReturn(0);
+        when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
+        doNothing().when(dBdriver).updateProduct(productMock);
+        shop.updateProduct(productMock);
+
+        verify(dBdriver, times(1)).updateProduct(productMock);
+
+    }
+
 }
