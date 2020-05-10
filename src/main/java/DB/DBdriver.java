@@ -1,6 +1,7 @@
 package DB;
 
 import proj2.entities.Client;
+import proj2.entities.Product;
 
 public interface DBdriver {
 
@@ -8,6 +9,8 @@ public interface DBdriver {
     Client getClientById(int id);
     void removeClient(Client client);
     void updateClient(Client client);
+    void addProduct(Product product);
+    Product getProductById(int id);
 
 
 }

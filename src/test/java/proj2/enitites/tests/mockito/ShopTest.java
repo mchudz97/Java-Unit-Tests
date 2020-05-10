@@ -237,14 +237,14 @@ public class ShopTest {
     }
 
     @Test
-    @DisplayName("add product if client with the same id already exists")
+    @DisplayName("add product if product with the same id already exists")
     public void addProductWhenExists(){
 
         Product productMock = mock(Product.class);
 
         when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
 
-        assertThatThrownBy(() -> shop.addProduct(product))
+        assertThatThrownBy(() -> shop.addProduct(productMock))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("That product already exists!");
 
