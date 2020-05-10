@@ -13,7 +13,8 @@ import org.easymock.*;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
-
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 public class ShopTest {
 
     private DBdriver dBdriver;
@@ -74,6 +75,41 @@ public class ShopTest {
         shop.updateOrder(orderMock);
 
         verify();
+
+    }
+
+    @Test
+    @DisplayName("Get order by id when id is negative")
+    public void getOrderByIdWhenNegative(){
+
+        assertThatThrownBy(() -> shop.getOrderById(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid id value!");
+
+    }
+
+    @Test
+    @DisplayName("Get order by id when order doesnt exist")
+    public void getOrderByIdWhenNull(){
+
+        expect(dBdriver.getOrderById(0)).andReturn(null);
+        replay(dBdriver);
+
+        assertThatThrownBy(() -> shop.getOrderById(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Order with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get order by id")
+    public void getOrderById(){
+
+        Order orderMock = createMock(Order.class);
+        expect(dBdriver.getOrderById(0)).andReturn(orderMock);
+        replay(dBdriver);
+
+        assertThat(shop.getOrderById(0), is(orderMock));
 
     }
 
