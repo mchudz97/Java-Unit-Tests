@@ -2,6 +2,7 @@ package proj2.enitites.tests.mockito;
 
 import DB.DBdriver;
 import DB.Shop;
+import Matchers.Mockito.ClientMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import proj2.entities.Client;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -178,6 +182,44 @@ public class ShopTest {
         shop.updateClient(clientMock);
 
         verify(dBdriver, times(1)).updateClient(clientMock);
+
+    }
+
+    @Test
+    @DisplayName("Get client by id when no client with that id")
+    public void getClientByIdWhenNoClient(){
+
+        when(dBdriver.getClientById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.getClientById(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Client with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get client by id when id value is negative")
+    public void getClientByIdWhenNegative(){
+
+        assertThatThrownBy(() -> shop.getClientById(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid id value!");
+
+    }
+
+    private Client clientEquals(Client expected){
+        return argThat(new ClientMatcher(expected));
+    }
+
+    @Test
+    @DisplayName("Get client by id")
+    public void getClientById(){
+
+        Client clientMock = mock(Client.class);
+
+        when(dBdriver.getClientById(0)).thenReturn(clientMock);
+
+        assertThat(shop.getClientById(0), is(clientMock));
 
     }
 
