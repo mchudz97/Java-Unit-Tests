@@ -32,7 +32,6 @@ public class ShopTest {
 
         dBdriver = mock(DBdriver.class);
 
-
     }
 
     @BeforeEach
@@ -46,7 +45,6 @@ public class ShopTest {
     @Test
     @DisplayName("Shop initialization test")
     public void initTest(){
-
 
         assertThat(shop.getDBdriver(), is(dBdriver));
 
@@ -85,19 +83,17 @@ public class ShopTest {
         Client clientMock = mock(Client.class);
         when(clientMock.getId()).thenReturn(0);
         when(dBdriver.getClientById(0)).thenReturn(null);
-
         final boolean[] isAdded = {false};
-
         doAnswer(new Answer<Void>(){
 
             @Override
             public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
                 isAdded[0] = true;
                 return null;
+
             }
 
         }).when(dBdriver).addClient(clientMock);
-
         shop.addClient(clientMock);
 
         assertThat(isAdded[0], is(true)); // taki sobie przyklad dla voidow
@@ -136,9 +132,7 @@ public class ShopTest {
 
         Client clientMock = mock(Client.class);
         when(dBdriver.getClientById(0)).thenReturn(clientMock);
-
         doNothing().when(dBdriver).removeClient(clientMock);
-
         shop.removeClient(clientMock);
 
         verify(dBdriver, times(1)).removeClient(clientMock); // no mozna i tak
@@ -177,9 +171,7 @@ public class ShopTest {
 
         Client clientMock = mock(Client.class);
         when(dBdriver.getClientById(0)).thenReturn(clientMock);
-
         doNothing().when(dBdriver).updateClient(clientMock);
-
         shop.updateClient(clientMock);
 
         verify(dBdriver, times(1)).updateClient(clientMock);
@@ -217,7 +209,6 @@ public class ShopTest {
     public void getClientById(){
 
         Client clientMock = mock(Client.class);
-
         when(dBdriver.getClientById(0)).thenReturn(clientMock);
 
         assertThat(shop.getClientById(0), is(clientMock));
@@ -229,7 +220,6 @@ public class ShopTest {
     public void addProductWhenNull(){
 
         Product product = null;
-
         assertThatThrownBy(() -> shop.addProduct(product))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Cannot add null object");
@@ -241,9 +231,7 @@ public class ShopTest {
     public void addProductWhenExists(){
 
         Product productMock = mock(Product.class);
-
         when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
-
         assertThatThrownBy(() -> shop.addProduct(productMock))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("That product already exists!");
@@ -256,7 +244,6 @@ public class ShopTest {
     public void addProduct(){
 
         Product productMock = mock(Product.class);
-
         when(dBdriver.getProductById(0)).thenReturn(null);
         doNothing().when(dBdriver).addProduct(productMock);
         shop.addProduct(productMock);
@@ -342,6 +329,40 @@ public class ShopTest {
         shop.updateProduct(productMock);
 
         verify(dBdriver, times(1)).updateProduct(productMock);
+
+    }
+
+    @Test
+    @DisplayName("Get client by id when no product with that id")
+    public void getClientByIdWhenNoClient(){
+
+        when(dBdriver.getProductById(0)).thenReturn(null);
+
+        assertThatThrownBy(() -> shop.getProductById(0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Product with that id doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get product by id when id value is negative")
+    public void getProductByIdWhenNegative(){
+
+        assertThatThrownBy(() -> shop.getProductById(-1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid id value!");
+
+    }
+
+
+    @Test
+    @DisplayName("Get product by id")
+    public void getProductById(){
+
+        Product productMock = mock(Product.class);
+        when(dBdriver.getProductById(0)).thenReturn(productMock);
+
+        assertThat(shop.getProductById(0), is(productMock));
 
     }
 
