@@ -113,4 +113,23 @@ public class Shop {
 
     }
 
+    public void removeProduct(Product product){
+
+        if(product == null){
+
+            throw new IllegalArgumentException("Cannot remove null object!");
+
+        }
+
+        if (this.dBdriver.getProductById(product.getId()) == null){
+
+            throw new IllegalArgumentException("Product with that id doesnt exist!");
+
+        }
+
+        this.dBdriver.removeProduct(product);
+
+    }
+
+
 }

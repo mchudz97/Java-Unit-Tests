@@ -273,7 +273,7 @@ public class ShopTest {
 
         assertThatThrownBy(() -> shop.removeProduct(product))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Cannot remove null object");
+                .hasMessage("Cannot remove null object!");
 
     }
 
@@ -285,7 +285,7 @@ public class ShopTest {
         when(productMock.getId()).thenReturn(0);
         when(dBdriver.getProductById(0)).thenReturn(null);
 
-        assertThatThrownBy(() -> shop.removeProduct(product))
+        assertThatThrownBy(() -> shop.removeProduct(productMock))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Product with that id doesnt exist!");
 
@@ -298,7 +298,7 @@ public class ShopTest {
         Product productMock = mock(Product.class);
         when(productMock.getId()).thenReturn(0);
         when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
-        doNothing().when(dBdriver.removeProduct(productMock));
+        doNothing().when(dBdriver).removeProduct(productMock);
         shop.removeProduct(productMock);
 
         verify(dBdriver, times(1)).removeProduct(productMock);
