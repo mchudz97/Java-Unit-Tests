@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import proj2.entities.Client;
+import proj2.entities.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,6 +221,47 @@ public class ShopTest {
         when(dBdriver.getClientById(0)).thenReturn(clientMock);
 
         assertThat(shop.getClientById(0), is(clientMock));
+
+    }
+
+    @Test
+    @DisplayName("add product when product is null")
+    public void addProductWhenNull(){
+
+        Product product = null;
+
+        assertThatThrownBy(() -> shop.addProduct(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Cannot add null object");
+
+    }
+
+    @Test
+    @DisplayName("add product if client with the same id already exists")
+    public void addProductWhenExists(){
+
+        Product productMock = mock(Product.class);
+
+        when(dBdriver.getProductById(0)).thenReturn(mock(Product.class));
+
+        assertThatThrownBy(() -> shop.addProduct(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("That product already exists!");
+
+
+    }
+
+    @Test
+    @DisplayName("add product")
+    public void addProduct(){
+
+        Product productMock = mock(Product.class);
+
+        when(dBdriver.getProductById(0)).thenReturn(null);
+        doNothing().when(dBdriver).addProduct(productMock);
+        shop.addProduct(productMock);
+
+        verify(dBdriver, times(1)).addProduct(productMock);
 
     }
 
