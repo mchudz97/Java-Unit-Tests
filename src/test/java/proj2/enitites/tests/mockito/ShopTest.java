@@ -447,4 +447,7 @@ public class ShopTest {
 
     }
 
+    //ciag dalszy w easymock
+
+
 }
