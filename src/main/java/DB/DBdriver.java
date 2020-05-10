@@ -22,6 +22,7 @@ public interface DBdriver {
     void removeOrder(Order order);
     void updateOrder(Order order);
     List<Order> getAllOrdersFrom(Client client);
+    List<Product> getAllProductsFrom(Order order);
 
 
 }
