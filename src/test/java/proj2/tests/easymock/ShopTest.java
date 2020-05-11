@@ -6,12 +6,14 @@ import com.thoughtworks.qdox.model.expression.Or;
 import org.easymock.Mock;
 import org.easymock.MockType;
 import org.easymock.TestSubject;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import proj2.entities.Client;
 import proj2.entities.Order;
 import org.easymock.*;
+import proj2.entities.Product;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
@@ -27,7 +29,7 @@ public class ShopTest {
     @BeforeEach
     public void reset(){
 
-        dBdriver = createMock(MockType.NICE, DBdriver.class);
+        dBdriver = createMock(MockType.STRICT, DBdriver.class);
         shop = new Shop(dBdriver);
 
     }
@@ -52,9 +54,8 @@ public class ShopTest {
 
         Order orderMock = createMock(Order.class);
         expect(orderMock.getId()).andReturn(0);
-        expect(dBdriver.getClientById(0)).andReturn(null);
-
         replay(orderMock);
+        expect(dBdriver.getOrderById(0)).andReturn(null);
         replay(dBdriver);
 
         assertThatThrownBy(() -> shop.updateOrder(orderMock))
@@ -194,6 +195,49 @@ public class ShopTest {
         expect(dBdriver.getAllProductsFrom(orderMock)).andReturn(null);
         replay(orderMock, dBdriver);
         shop.getAllProductsFrom(orderMock);
+
+        verify();
+
+    }
+
+    @Test
+    @DisplayName("Get all orders from null product")
+    public void getAllOrdersFromNull(){
+
+        Product product = null;
+
+        assertThatThrownBy(() -> shop.getAllOrdersFrom(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Product is  null!");
+
+
+    }
+
+    @Test
+    @DisplayName("Get all orders from non existing product")
+    public void getAllOrderFromNonExisting(){
+
+        Product productMock = createMock(MockType.DEFAULT, Product.class);
+        expect(productMock.getId()).andReturn(0);
+        expect(dBdriver.getProductById(0)).andReturn(null);
+        replay(productMock, dBdriver);
+
+        assertThatThrownBy(() -> shop.getAllOrdersFrom(product))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Product doesnt exist!");
+
+    }
+
+    @Test
+    @DisplayName("Get all orders from product")
+    public void getAllOrdersFromProduct(){
+
+        Product productMock = createMock(MockType.DEFAULT, Product.class);
+        expect(productMock.getId()).andReturn(0);
+        expect(dBdriver.getProductById(0)).andReturn(createMock(Product.class));
+        expect(dBdriver.getAllProductsFrom(productMock)).andReturn(null);
+        replay(productMock, dBdriver);
+        shop.getAllOrdersFrom(productMock);
 
         verify();
 
