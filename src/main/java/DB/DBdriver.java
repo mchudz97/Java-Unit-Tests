@@ -24,6 +24,7 @@ public interface DBdriver {
     List<Order> getAllOrdersFrom(Client client);
     List<Product> getAllProductsFrom(Order order);
     List<Order> getAllOrdersFrom(Product product);
+    List<Client> getAllClients();
 
 
 }

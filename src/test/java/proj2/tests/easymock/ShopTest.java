@@ -17,6 +17,7 @@ import org.easymock.*;
 import proj2.entities.Product;
 import proj2.myMocks.AdminToolsFake;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -351,17 +352,19 @@ public class ShopTest {
         Client clientMock2 = createMock(MockType.NICE, Client.class);
         expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
         expect(clientMock2.getEmailAdress()).andReturn("invalid@email.com");
-        List<Client> listMock = createMock(MockType.STRICT, List.class);
-        expect(listMock.get(0)).andReturn(clientMock1);
-        expect(listMock.get(1)).andReturn(clientMock2);
-        expect(dBdriver.getAllClients()).andReturn(listMock);
+        List<Client> list = new ArrayList<Client>(0);
+
+        list.add(clientMock1);
+        list.add(clientMock2);
+
+        expect(dBdriver.getAllClients()).andReturn(list);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
         shop = new Shop(dBdriver, adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true).times(2);
         expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true);
         expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(false);
-        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver, listMock);
+        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver);
 
         assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", "d"))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -378,15 +381,16 @@ public class ShopTest {
         Client clientMock1 = createMock(MockType.NICE, Client.class);
         Client clientMock2 = createMock(MockType.NICE, Client.class);
         expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
-        List<Client> listMock = createMock(MockType.STRICT, List.class);
-        expect(listMock.get(0)).andReturn(clientMock1);
-        expect(dBdriver.getAllClients()).andReturn(listMock);
+        List<Client> list= new ArrayList<Client>();
+        list.add(clientMock1);
+        list.add(clientMock2);
+        expect(dBdriver.getAllClients()).andReturn(list);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
         shop = new Shop(dBdriver, adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(false).times(1);
 
-        replay(clientMock1, listMock, emailCheckerMock, dBdriver);
+        replay(clientMock1,  emailCheckerMock, dBdriver);
 
         assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", "d"))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -400,17 +404,16 @@ public class ShopTest {
     public void sendBroadcastWithBlankDescription(){
 
         Client clientMock1 = createMock(MockType.NICE, Client.class);
-        Client clientMock2 = createMock(MockType.NICE, Client.class);
         expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
-        List<Client> listMock = createMock(MockType.STRICT, List.class);
-        expect(listMock.get(0)).andReturn(clientMock1);
-        expect(dBdriver.getAllClients()).andReturn(listMock);
+        List<Client> list= new ArrayList<Client>();
+        list.add(clientMock1);
+        expect(dBdriver.getAllClients()).andReturn(list);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
         shop = new Shop(dBdriver, adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true).times(1);
-
-        replay(clientMock, emailCheckerMock);
+        expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true).times(1);
+        replay(clientMock1,  dBdriver, emailCheckerMock);
 
         assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", ""))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -424,17 +427,16 @@ public class ShopTest {
     public void sendBroadcastWithNullDescription(){
 
         Client clientMock1 = createMock(MockType.NICE, Client.class);
-        Client clientMock2 = createMock(MockType.NICE, Client.class);
         expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
-        List<Client> listMock = createMock(MockType.STRICT, List.class);
-        expect(listMock.get(0)).andReturn(clientMock1);
-        expect(dBdriver.getAllClients()).andReturn(listMock);
+        List<Client> list= new ArrayList<Client>();
+        list.add(clientMock1);
+        expect(dBdriver.getAllClients()).andReturn(list);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
         shop = new Shop(dBdriver, adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true).times(1);
-
-        replay(clientMock, emailCheckerMock);
+        expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true).times(1);
+        replay(clientMock1, dBdriver, emailCheckerMock);
 
         assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", null))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -464,17 +466,17 @@ public class ShopTest {
         Client clientMock2 = createMock(MockType.NICE, Client.class);
         expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
         expect(clientMock2.getEmailAdress()).andReturn("invalid@email.com");
-        List<Client> listMock = createMock(MockType.STRICT, List.class);
-        expect(listMock.get(0)).andReturn(clientMock1).times(1);
-        expect(listMock.get(1)).andReturn(clientMock2).times(1);
-        expect(dBdriver.getAllClients()).andReturn(listMock).times(1);
+        List<Client> list= new ArrayList<Client>();
+        list.add(clientMock1);
+        list.add(clientMock2);
+        expect(dBdriver.getAllClients()).andReturn(list);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
         shop = new Shop(dBdriver, adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true).times(2);
         expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true).times(1);
         expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true).times(1);
-        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver, listMock);
+        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver);
 
         verify();
 

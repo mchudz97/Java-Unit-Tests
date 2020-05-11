@@ -23,6 +23,13 @@ public class Shop {
 
     }
 
+    public Shop(DBdriver dBdriver, AdminTools adminTools){
+
+        this.adminTools = adminTools;
+        this.dBdriver = dBdriver;
+
+    }
+
 
     public DBdriver getDBdriver() {
         return dBdriver;
@@ -314,7 +321,18 @@ public class Shop {
 
     }
 
+    public void sendBroadcastEmailFrom(String sender, String description){
 
+        List<Client> clients = this.dBdriver.getAllClients();
+        if(clients == null){
+
+            throw new IllegalArgumentException("No clients found.");
+
+        }
+
+        adminTools.sendBroadcastMessage(sender, clients, description);
+
+    }
 
 
 }
