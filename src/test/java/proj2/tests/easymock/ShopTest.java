@@ -444,6 +444,19 @@ public class ShopTest {
     }
 
     @Test
+    @DisplayName("Send broadcast when no clients")
+    public void sendBroadCastWhenNoClients(){
+
+        expect(dBdriver.getAllClients()).andReturn(null);
+
+        replay(dBdriver);
+
+        assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", "d"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("No clients found.");
+    }
+
+    @Test
     @DisplayName("Send broadcast email ")
     public void sendBroadcast(){
 
