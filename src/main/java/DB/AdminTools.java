@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface AdminTools {
 
-    void sendMessage(String sender, Client receiver);
-    void sendBroadcastMessage(String sender, List<Client> clients);
+    void sendMessage(String sender, Client receiver, String description);
+    void sendBroadcastMessage(String sender, List<Client> clients, String description);
     boolean checkIsActive(String email);
 
 }

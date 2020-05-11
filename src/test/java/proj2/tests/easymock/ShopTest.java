@@ -17,6 +17,8 @@ import org.easymock.*;
 import proj2.entities.Product;
 import proj2.myMocks.AdminToolsFake;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
 import static org.hamcrest.Matchers.*;
@@ -252,12 +254,13 @@ public class ShopTest {
         Client clientMock = createMock(MockType.NICE, Client.class);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true);
         expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
         expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(false);
         replay(clientMock, emailCheckerMock);
 
-        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock))
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock, "d"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("invalid@email.com is not valid adress.");
 
@@ -268,17 +271,57 @@ public class ShopTest {
     @DisplayName("Send email from inactive email adress")
     public void sendFromInactive(){
 
+
         Client clientMock = createMock(MockType.NICE, Client.class);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(false);
 
         replay(emailCheckerMock);
 
-        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock))
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock, "d"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("a is not valid adress.");
 
+
+    }
+
+    @Test
+    @DisplayName("Send email with blank description")
+    public void sendEmailWithBlankDescription(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true);
+        expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true);
+        replay(clientMock, emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock, ""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid description.");
+
+    }
+
+    @Test
+    @DisplayName("Send email with null description")
+    public void sendEmailWithNullDescription(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true);
+        expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true);
+        replay(clientMock, emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid description.");
 
     }
 
@@ -289,13 +332,141 @@ public class ShopTest {
         Client clientMock = createMock(MockType.NICE, Client.class);
         EmailChecker emailCheckerMock = createMock(EmailChecker.class);
         AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(adminToolsFake);
         expect(emailCheckerMock.isActive("a")).andReturn(true);
         expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
         expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true);
         replay(clientMock, emailCheckerMock);
 
+        shop.sendEmailFromTo("a", clientMock, "d");
         verify();
 
     }
+
+    @Test
+    @DisplayName("Send broadcast email if receiver is inactive adress")
+    public void sendBroadcastToInactive(){
+
+        Client clientMock1 = createMock(MockType.NICE, Client.class);
+        Client clientMock2 = createMock(MockType.NICE, Client.class);
+        expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
+        expect(clientMock2.getEmailAdress()).andReturn("invalid@email.com");
+        List<Client> listMock = createMock(MockType.STRICT, List.class);
+        expect(listMock.get(0)).andReturn(clientMock1);
+        expect(listMock.get(1)).andReturn(clientMock2);
+        expect(dBdriver.getAllClients()).andReturn(listMock);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(dBdriver, adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true).times(2);
+        expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true);
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(false);
+        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver, listMock);
+
+        assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", "d"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("invalid@email.com is not valid adress.");
+
+
+    }
+
+
+    @Test
+    @DisplayName("Send broadcast email if sender is inactive adress")
+    public void sendBroadcastFromInactive(){
+
+        Client clientMock1 = createMock(MockType.NICE, Client.class);
+        Client clientMock2 = createMock(MockType.NICE, Client.class);
+        expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
+        List<Client> listMock = createMock(MockType.STRICT, List.class);
+        expect(listMock.get(0)).andReturn(clientMock1);
+        expect(dBdriver.getAllClients()).andReturn(listMock);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(dBdriver, adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(false).times(1);
+
+        replay(clientMock1, listMock, emailCheckerMock, dBdriver);
+
+        assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", "d"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("a is not valid adress.");
+
+
+    }
+
+    @Test
+    @DisplayName("Send broadcast email if description is blank")
+    public void sendBroadcastWithBlankDescription(){
+
+        Client clientMock1 = createMock(MockType.NICE, Client.class);
+        Client clientMock2 = createMock(MockType.NICE, Client.class);
+        expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
+        List<Client> listMock = createMock(MockType.STRICT, List.class);
+        expect(listMock.get(0)).andReturn(clientMock1);
+        expect(dBdriver.getAllClients()).andReturn(listMock);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(dBdriver, adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true).times(1);
+
+        replay(clientMock, emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", ""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid description.");
+
+
+    }
+
+    @Test
+    @DisplayName("Send broadcast email if description is null")
+    public void sendBroadcastWithNullDescription(){
+
+        Client clientMock1 = createMock(MockType.NICE, Client.class);
+        Client clientMock2 = createMock(MockType.NICE, Client.class);
+        expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
+        List<Client> listMock = createMock(MockType.STRICT, List.class);
+        expect(listMock.get(0)).andReturn(clientMock1);
+        expect(dBdriver.getAllClients()).andReturn(listMock);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(dBdriver, adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true).times(1);
+
+        replay(clientMock, emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendBroadcastEmailFrom("a", null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid description.");
+
+
+    }
+
+    @Test
+    @DisplayName("Send broadcast email ")
+    public void sendBroadcast(){
+
+        Client clientMock1 = createMock(MockType.NICE, Client.class);
+        Client clientMock2 = createMock(MockType.NICE, Client.class);
+        expect(clientMock1.getEmailAdress()).andReturn("valid@email.com");
+        expect(clientMock2.getEmailAdress()).andReturn("invalid@email.com");
+        List<Client> listMock = createMock(MockType.STRICT, List.class);
+        expect(listMock.get(0)).andReturn(clientMock1).times(1);
+        expect(listMock.get(1)).andReturn(clientMock2).times(1);
+        expect(dBdriver.getAllClients()).andReturn(listMock).times(1);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        shop = new Shop(dBdriver, adminToolsFake);
+        expect(emailCheckerMock.isActive("a")).andReturn(true).times(2);
+        expect(emailCheckerMock.isActive("valid@email.com")).andReturn(true).times(1);
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true).times(1);
+        replay(clientMock1, clientMock2, emailCheckerMock, dBdriver, listMock);
+
+        verify();
+
+
+    }
+
 
 }

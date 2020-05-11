@@ -16,7 +16,7 @@ public class AdminToolsFake implements AdminTools {
 
     }
     @Override
-    public void sendMessage(String sender, Client receiver) {
+    public void sendMessage(String sender, Client receiver, String description) {
 
         if(!checkIsActive(sender)){
 
@@ -24,9 +24,17 @@ public class AdminToolsFake implements AdminTools {
 
         }
 
-        if(!checkIsActive(receiver.getEmailAdress())){
+        String receiverMail =receiver.getEmailAdress();
+        if(!checkIsActive(receiverMail)){
 
-            throw new IllegalArgumentException(receiver.getEmailAdress() + " is not valid adress.");
+            throw new IllegalArgumentException(receiverMail + " is not valid adress.");
+
+        }
+
+        if(description == null || description == ""){
+
+
+            throw new IllegalArgumentException("Invalid description.");
 
         }
 
@@ -35,12 +43,12 @@ public class AdminToolsFake implements AdminTools {
     }
 
     @Override
-    public void sendBroadcastMessage(String sender, List<Client> clients) {
+    public void sendBroadcastMessage(String sender, List<Client> clients, String description) {
 
         for(int i = 0; i < clients.size(); i++){
 
 
-            sendMessage(sender, clients.get(i));
+            sendMessage(sender, clients.get(i), description);
 
         }
 

@@ -9,10 +9,17 @@ import java.util.List;
 public class Shop {
 
     private DBdriver dBdriver;
+    private AdminTools adminTools;
 
     public Shop(DBdriver dBdriver){
 
         this.setDBdriver(dBdriver);
+
+    }
+
+    public Shop(AdminTools adminTools){
+
+        this.adminTools = adminTools;
 
     }
 
@@ -299,5 +306,13 @@ public class Shop {
         return dBdriver.getAllOrdersFrom(product);
 
     }
+
+    public void sendEmailFromTo(String sender, Client receiver, String description){
+
+
+        this.adminTools.sendMessage(sender, receiver, description);
+
+    }
+
 
 }
