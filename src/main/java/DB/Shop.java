@@ -289,7 +289,7 @@ public class Shop {
 
         }
 
-        if(this.dBdriver.getProductById(product.getId()) == null){
+        if(this.dBdriver.getProductById( product.getId()) == null){
 
             throw new IllegalArgumentException("Product doesnt exist!");
 

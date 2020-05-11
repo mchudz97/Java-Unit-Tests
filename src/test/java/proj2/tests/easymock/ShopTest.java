@@ -1,6 +1,7 @@
 package proj2.tests.easymock;
 
 import DB.DBdriver;
+import DB.EmailChecker;
 import DB.Shop;
 import com.thoughtworks.qdox.model.expression.Or;
 import org.easymock.Mock;
@@ -14,6 +15,7 @@ import proj2.entities.Client;
 import proj2.entities.Order;
 import org.easymock.*;
 import proj2.entities.Product;
+import proj2.myMocks.AdminToolsFake;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.easymock.EasyMock.*;
@@ -243,5 +245,57 @@ public class ShopTest {
 
     }
 
+    @Test
+    @DisplayName("Send email to inactive email adress")
+    public void sendToInactive(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        expect(emailCheckerMock.isActive("a")).andReturn(true);
+        expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(false);
+        replay(clientMock, emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("invalid@email.com is not valid adress.");
+
+
+    }
+
+    @Test
+    @DisplayName("Send email from inactive email adress")
+    public void sendFromInactive(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        expect(emailCheckerMock.isActive("a")).andReturn(false);
+
+        replay(emailCheckerMock);
+
+        assertThatThrownBy(() -> shop.sendEmailFromTo("a", clientMock))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("a is not valid adress.");
+
+
+    }
+
+    @Test
+    @DisplayName("Send email")
+    public void sendEmail(){
+
+        Client clientMock = createMock(MockType.NICE, Client.class);
+        EmailChecker emailCheckerMock = createMock(EmailChecker.class);
+        AdminToolsFake adminToolsFake = new AdminToolsFake(emailCheckerMock);
+        expect(emailCheckerMock.isActive("a")).andReturn(true);
+        expect(clientMock.getEmailAdress()).andReturn("invalid@email.com");
+        expect(emailCheckerMock.isActive("invalid@email.com")).andReturn(true);
+        replay(clientMock, emailCheckerMock);
+
+        verify();
+
+    }
 
 }
