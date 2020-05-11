@@ -45,9 +45,9 @@ public class AdminToolsFake implements AdminTools {
     @Override
     public void sendBroadcastMessage(String sender, List<Client> clients, String description) {
 
-        for(int i = 0; i < clients.size(); i++){
+        for(Client c : clients){
 
-            sendMessage(sender, clients.get(i), description);
+            sendMessage(sender, c, description);
 
         }
 
