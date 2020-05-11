@@ -222,7 +222,7 @@ public class ShopTest {
         expect(dBdriver.getProductById(0)).andReturn(null);
         replay(productMock, dBdriver);
 
-        assertThatThrownBy(() -> shop.getAllOrdersFrom(product))
+        assertThatThrownBy(() -> shop.getAllOrdersFrom(productMock))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Product doesnt exist!");
 
@@ -235,7 +235,7 @@ public class ShopTest {
         Product productMock = createMock(MockType.DEFAULT, Product.class);
         expect(productMock.getId()).andReturn(0);
         expect(dBdriver.getProductById(0)).andReturn(createMock(Product.class));
-        expect(dBdriver.getAllProductsFrom(productMock)).andReturn(null);
+        expect(dBdriver.getAllOrdersFrom(productMock)).andReturn(null);
         replay(productMock, dBdriver);
         shop.getAllOrdersFrom(productMock);
 

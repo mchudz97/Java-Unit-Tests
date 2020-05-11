@@ -277,10 +277,27 @@ public class Shop {
 
         }
 
-
         return dBdriver.getAllProductsFrom(order);
 
     }
 
+    public List<Order> getAllOrdersFrom(Product product){
+
+        if(product == null){
+
+            throw new IllegalArgumentException("Product is  null!");
+
+        }
+
+        if(this.dBdriver.getProductById(product.getId()) == null){
+
+            throw new IllegalArgumentException("Product doesnt exist!");
+
+        }
+
+
+        return dBdriver.getAllOrdersFrom(product);
+
+    }
 
 }
