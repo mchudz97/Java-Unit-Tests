@@ -2,11 +2,11 @@ package Matchers.Mockito;
 import org.mockito.ArgumentMatcher;
 import proj2.entities.Product;
 
-class ProductMatcher implements ArgumentMatcher<Product> {
+public class ProductMatcher implements ArgumentMatcher<Product> {
 
     private Product expected;
 
-    ProductMatcher(Product p){
+    public ProductMatcher(Product p){
 
         this.expected = p;
 

@@ -1,4 +1,6 @@
-package proj2.entities;
+package DB;
+
+import proj2.entities.Product;
 
 import java.util.ArrayList;
 import java.util.Arrays;

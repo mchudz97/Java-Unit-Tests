@@ -3,6 +3,8 @@ package proj2.tests.mockito;
 import DB.DBdriver;
 import DB.Shop;
 import Matchers.Mockito.ClientMatcher;
+import Matchers.Mockito.OrderMatcher;
+import Matchers.Mockito.ProductMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,13 +15,10 @@ import proj2.entities.Client;
 import proj2.entities.Order;
 import proj2.entities.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
-import static org.hamcrest.Matchers.*;
+
 import static org.assertj.core.api.Assertions.*;
 
 public class ShopTest {
@@ -32,6 +31,23 @@ public class ShopTest {
     private void setupDbMock(){
 
         dBdriver = mock(DBdriver.class);
+
+    }
+    private Client clientEquals(Client expected){
+
+        return argThat(new ClientMatcher(expected));
+
+    }
+
+    private Product productEquals(Product expected){
+
+        return argThat(new ProductMatcher(expected));
+
+    }
+
+    private Order orderEquals(Order expected){
+
+        return argThat(new OrderMatcher(expected));
 
     }
 
@@ -136,7 +152,7 @@ public class ShopTest {
         doNothing().when(dBdriver).removeClient(clientMock);
         shop.removeClient(clientMock);
 
-        verify(dBdriver, times(1)).removeClient(clientMock); // no mozna i tak
+        verify(dBdriver, times(1)).removeClient(clientEquals(clientMock)); // no mozna i tak
 
     }
 
@@ -166,6 +182,7 @@ public class ShopTest {
 
     }
 
+
     @Test
     @DisplayName("Update client")
     public void updateClient(){
@@ -175,7 +192,7 @@ public class ShopTest {
         doNothing().when(dBdriver).updateClient(clientMock);
         shop.updateClient(clientMock);
 
-        verify(dBdriver, times(1)).updateClient(clientMock);
+        verify(dBdriver, times(1)).updateClient(clientEquals(clientMock));
 
     }
 
@@ -201,9 +218,7 @@ public class ShopTest {
 
     }
 
-    private Client clientEquals(Client expected){
-        return argThat(new ClientMatcher(expected));
-    }
+
 
     @Test
     @DisplayName("Get client by id")
@@ -249,7 +264,7 @@ public class ShopTest {
         doNothing().when(dBdriver).addProduct(productMock);
         shop.addProduct(productMock);
 
-        verify(dBdriver, times(1)).addProduct(productMock);
+        verify(dBdriver, times(1)).addProduct(productEquals(productMock));
 
     }
 
@@ -289,7 +304,7 @@ public class ShopTest {
         doNothing().when(dBdriver).removeProduct(productMock);
         shop.removeProduct(productMock);
 
-        verify(dBdriver, times(1)).removeProduct(productMock);
+        verify(dBdriver, times(1)).removeProduct(productEquals(productMock));
 
     }
 
@@ -329,7 +344,7 @@ public class ShopTest {
         doNothing().when(dBdriver).updateProduct(productMock);
         shop.updateProduct(productMock);
 
-        verify(dBdriver, times(1)).updateProduct(productMock);
+        verify(dBdriver, times(1)).updateProduct(productEquals(productMock));
 
     }
 
@@ -402,7 +417,7 @@ public class ShopTest {
         doNothing().when(dBdriver).addOrder(orderMock);
         shop.addOrder(orderMock);
 
-        verify(dBdriver, times(1)).addOrder(orderMock);
+        verify(dBdriver, times(1)).addOrder(orderEquals(orderMock));
 
 
     }
@@ -443,7 +458,7 @@ public class ShopTest {
         doNothing().when(dBdriver).removeOrder(orderMock);
         shop.removeOrder(orderMock);
 
-        verify(dBdriver, times(1)).removeOrder(orderMock);
+        verify(dBdriver, times(1)).removeOrder(orderEquals(orderMock));
 
     }
 

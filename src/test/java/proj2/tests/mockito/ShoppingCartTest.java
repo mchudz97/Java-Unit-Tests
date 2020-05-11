@@ -1,13 +1,9 @@
 package proj2.tests.mockito;
 
-import Matchers.Mockito.ClientListMatcher;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import proj2.entities.Client;
 import proj2.entities.Product;
-import proj2.entities.ShoppingCart;
-
-import java.util.List;
+import DB.ShoppingCart;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;

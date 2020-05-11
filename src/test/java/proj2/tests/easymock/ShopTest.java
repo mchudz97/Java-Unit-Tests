@@ -3,6 +3,7 @@ package proj2.tests.easymock;
 import DB.DBdriver;
 import DB.EmailChecker;
 import DB.Shop;
+import Matchers.Easymock.OrderMatcher;
 import org.easymock.MockType;
 import org.easymock.TestSubject;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,10 +70,10 @@ public class ShopTest {
     @DisplayName("Update order")
     public void updateOrder(){
 
-        Order orderMock = createMock(Order.class);
-        expect(orderMock.getId()).andReturn(0);
+        Order orderMock = createMock(MockType.NICE, Order.class);
+        expect(orderMock.getId()).andReturn(0).anyTimes();
         expect(dBdriver.getOrderById(0)).andReturn(createMock(Order.class));
-        dBdriver.updateOrder(orderMock);
+        dBdriver.updateOrder(OrderMatcher.matchOrder());
         expectLastCall();
         replay(dBdriver, orderMock);
 
@@ -193,7 +194,7 @@ public class ShopTest {
         Order orderMock = createMock(MockType.NICE, Order.class);
         expect(orderMock.getId()).andReturn(0);
         expect(dBdriver.getOrderById(0)).andReturn(createMock(Order.class));
-        expect(dBdriver.getAllProductsFrom(orderMock)).andReturn(null);
+        expect(dBdriver.getAllProductsFrom(OrderMatcher.matchOrder())).andReturn(null);
         replay(orderMock, dBdriver);
         shop.getAllProductsFrom(orderMock);
 
